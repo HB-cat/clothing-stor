@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- 标题 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加商品"
+            android:textSize="24sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 商品名称 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品名称"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/et_product_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_bg"
+            android:padding="12dp"
+            android:hint="如：复古风连衣裙"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 分类选择 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分类"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/sp_category"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_bg"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 属性选择区域（动态生成） -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="属性标签"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_attributes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- 这里由代码动态生成 Spinner -->
+        </LinearLayout>
+
+        <!-- 进价 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="进价（元）"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/et_cost_price"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_bg"
+            android:padding="12dp"
+            android:hint="如：60"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 售价 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="售价（元）"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/et_selling_price"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_bg"
+            android:padding="12dp"
+            android:hint="如：120"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 保存按钮 -->
+        <Button
+            android:id="@+id/btn_save_product"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="保 存 商 品"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:backgroundTint="#4CAF50" />
+
+    </LinearLayout>
+</ScrollView>

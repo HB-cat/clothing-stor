@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- 标题栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#FF9800"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/tv_group_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="属性值"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- 新增属性值 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_value_name"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/edit_bg"
+            android:padding="12dp"
+            android:hint="输入新属性值，如：春季"
+            android:textSize="14sp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/btn_add_value"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:text="添加"
+            android:textSize="14sp"
+            android:backgroundTint="#4CAF50"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- 属性值列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_attribute_values"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp" />
+
+</LinearLayout>

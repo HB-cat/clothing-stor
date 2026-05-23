@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- 标题栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#2196F3"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="使用指南"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 首页说明 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏠 首页"
+                android:textSize="18sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• 顶部显示店铺名称和运行状态\n• 下方网格为商品分类，点击进入该分类的商品列表\n• 输入框支持快捷指令记账（见下方）\n• 底部导航切换首页、账单、进货、我的"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="6dp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- 快捷指令 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📢 快捷指令"
+                android:textSize="18sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="在首页输入框输入指令，快速完成记账：\n\n• 卖了[商品名] [数量] [价格]\n　例：卖了连衣裙一件90块\n• 进了[商品名] [数量] [价格]\n　例：进了连衣裙5件60块\n• 退了[商品名] [数量]\n　例：退了连衣裙一件\n\n说明：商品名需与已录入的商品一致；数量和价格可用阿拉伯数字或中文数字（一/两/三）；数量不写默认为1件"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="6dp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- 销售记账 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💰 销售记账"
+                android:textSize="18sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. 首页点击某个分类（如连衣裙）\n2. 点击要卖的商品\n3. 确认数量和价格（可改价）\n4. 点击「确认卖出」完成记账"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="6dp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- 进货入库 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📦 进货入库"
+                android:textSize="18sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. 底部导航点击「进货」\n2. 选择要入库的商品\n3. 每行选择颜色、尺码，填写数量和进价\n4. 可点击「＋ 添加一行」增加更多组合\n5. 底部自动计算总进货价\n6. 点击「确认入库」完成\n\n注意：只能选择已添加的商品，新商品需先去「我的」→「添加商品」录入"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="6dp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- 退货退款 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="↩️ 退货退款"
+                android:textSize="18sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. 底部导航点击「账单」\n2. 选择日期，点击「查询」\n3. 在销售流水中找到要退的那笔\n4. 向左滑动该条记录\n5. 弹出确认框，点击「确认退款」\n\n退款后销售额、毛利会自动更新"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="6dp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- 账单查询 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📊 账单查询"
+                android:textSize="18sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• 支持日/月/年三种统计维度\n• 点击日期区域弹出日历选择器\n• 选好日期后点击「查询」才显示数据\n• 默认不显示金额，保护隐私\n• 月模式显示12个月供选择\n• 年模式显示前后各5年"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="6dp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- 管理功能 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚙️ 管理功能（我的页面）"
+                android:textSize="18sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📋 商品管理：查看所有商品，点击可销售\n➕ 添加商品：录入新商品（名称、分类、属性、售价）\n🏷️ 属性管理：管理风格/面料/颜色/尺码等标签\n　• 点击 + 批量添加属性值\n　• 点击已有标签可单独删除\n　• 点击 ✕ 删除整个属性组（需确认）"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="6dp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- 实用提示 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💡 实用提示"
+                android:textSize="18sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• 所有删除操作都有二次确认，防止误触\n• 修改店铺名称：设置页面可修改\n• App完全离线可用，无需网络\n• 商品进价录入后不可修改（保护历史数据）"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="6dp"
+                android:layout_marginBottom="20dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- ==================== 顶部状态栏 ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <!-- 动态标题：小店名 — 服装店记账系统 -->
+        <TextView
+            android:id="@+id/tv_shop_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的小店 — 服装店记账系统"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🟢 运行正常"
+            android:textSize="14sp"
+            android:textColor="#4CAF50"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_last_sync"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="离线模式"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:layout_marginTop="2dp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- ==================== 快捷指令入口 ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp">
+
+        <EditText
+            android:id="@+id/et_command"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/edit_bg"
+            android:padding="12dp"
+            android:hint="📢 卖了[商品] [数量]件 [价格]块"
+            android:textSize="14sp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/btn_send_command"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:text="发送"
+            android:textSize="14sp"
+            android:backgroundTint="#2196F3"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- ==================== 快捷记账区域（动态加载分类按钮） ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:layout_marginTop="1dp"
+        android:background="#FFFFFF">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="【快捷记账】"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 第一行 -->
+        <LinearLayout
+            android:id="@+id/ll_cat_row1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+        </LinearLayout>
+
+        <!-- 第二行 -->
+        <LinearLayout
+            android:id="@+id/ll_cat_row2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ==================== 底部导航栏 ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:elevation="8dp">
+
+        <Button
+            android:id="@+id/btn_nav_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="🏠\n首页"
+            android:textSize="12sp"
+            android:backgroundTint="#E3F2FD"
+            android:textColor="#1976D2" />
+
+        <Button
+            android:id="@+id/btn_nav_bill"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="📊\n账单"
+            android:textSize="12sp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#333333" />
+
+        <Button
+            android:id="@+id/btn_nav_stock"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="📦\n进货"
+            android:textSize="12sp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#333333" />
+
+        <Button
+            android:id="@+id/btn_nav_my"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="👤\n我的"
+            android:textSize="12sp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#333333" />
+
+    </LinearLayout>
+
+</LinearLayout>

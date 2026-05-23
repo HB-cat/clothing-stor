@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="16dp"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/tv_value_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="属性值"
+        android:textSize="18sp"
+        android:textColor="#333333" />
+
+    <Button
+        android:id="@+id/btn_delete_value"
+        android:layout_width="48dp"
+        android:layout_height="36dp"
+        android:text="✕"
+        android:textSize="16sp"
+        android:backgroundTint="#FF5252"
+        android:padding="0dp" />
+
+</LinearLayout>

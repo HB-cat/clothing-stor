@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- 标题栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#2196F3"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="账单"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 日/月/年 切换标签 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp">
+
+        <Button
+            android:id="@+id/btn_tab_day"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="日"
+            android:textSize="16sp"
+            android:backgroundTint="#E3F2FD"
+            android:textColor="#1976D2" />
+
+        <Button
+            android:id="@+id/btn_tab_month"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="月"
+            android:textSize="16sp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#333333" />
+
+        <Button
+            android:id="@+id/btn_tab_year"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="年"
+            android:textSize="16sp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#333333" />
+    </LinearLayout>
+
+    <!-- 日期选择区 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择日期："
+            android:textSize="15sp"
+            android:textColor="#666666" />
+
+        <TextView
+            android:id="@+id/tv_selected_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="点击选择"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:background="@drawable/edit_bg"
+            android:clickable="true"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/btn_query"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="查询"
+            android:textSize="14sp"
+            android:backgroundTint="#4CAF50"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- 统计卡片 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="#FFFFFF"
+        android:layout_marginTop="1dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#E3F2FD"
+            android:padding="12dp"
+            android:layout_marginEnd="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="销售额"
+                android:textSize="13sp"
+                android:textColor="#666666" />
+
+            <TextView
+                android:id="@+id/tv_total_sales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textSize="20sp"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#E8F5E9"
+            android:padding="12dp"
+            android:layout_marginEnd="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="毛利"
+                android:textSize="13sp"
+                android:textColor="#666666" />
+
+            <TextView
+                android:id="@+id/tv_total_profit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textSize="20sp"
+                android:textColor="#4CAF50"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#FFF3E0"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="笔数"
+                android:textSize="13sp"
+                android:textColor="#666666" />
+
+            <TextView
+                android:id="@+id/tv_sale_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textSize="20sp"
+                android:textColor="#FF9800"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 销售流水标题 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="销售流水"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:textStyle="bold"
+        android:padding="12dp"
+        android:background="#FFFFFF"
+        android:layout_marginTop="1dp" />
+
+    <!-- 销售列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_sales"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+</LinearLayout>

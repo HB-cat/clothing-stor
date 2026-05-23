@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="14dp"
+    android:layout_marginBottom="4dp">
+
+    <TextView
+        android:id="@+id/tv_rank_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#FF9800"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_rank_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="商品名"
+        android:textSize="15sp"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tv_rank_qty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0件"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_rank_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="¥0"
+        android:textSize="14sp"
+        android:textColor="#1976D2"
+        android:gravity="end"/>
+
+    <TextView
+        android:id="@+id/tv_rank_profit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="¥0"
+        android:textSize="14sp"
+        android:textColor="#4CAF50"
+        android:gravity="end"/>
+</LinearLayout>

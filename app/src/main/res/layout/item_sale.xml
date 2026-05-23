@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_marginBottom="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_sale_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="14:32"
+            android:textSize="14sp"
+            android:textColor="#888888"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/tv_sale_product"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="商品名"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_sale_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥120"
+            android:textSize="16sp"
+            android:textColor="#FF5722"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp">
+
+        <TextView
+            android:id="@+id/tv_sale_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="数量: 1  进价: ¥60  毛利: ¥60"
+            android:textSize="13sp"
+            android:textColor="#999999" />
+
+        <TextView
+            android:id="@+id/tv_sale_refunded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已退款"
+            android:textSize="12sp"
+            android:textColor="#FF5252"
+            android:visibility="gone"
+            android:background="#FFEBEE"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
