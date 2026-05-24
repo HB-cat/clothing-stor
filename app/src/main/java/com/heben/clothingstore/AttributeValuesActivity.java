@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class AttributeValuesActivity extends AppCompatActivity {
+public class AttributeValuesActivity extends BaseActivity {
 
     private RecyclerView rvValues;
     private EditText etValueName;

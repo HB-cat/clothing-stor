@@ -29,11 +29,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.AlertDialog;
+import android.net.Uri;
+import android.widget.ImageView;
+import java.io.File;
+import com.heben.clothingstore.entity.Product;
+
 /**
  * 账单页面：支持日/月/年查询，日历选择器，默认隐藏金额。
  * 左滑销售记录可退款（需二次确认）。
  */
-public class BillActivity extends AppCompatActivity {
+public class BillActivity extends BaseActivity {
 
     private RecyclerView rvSales;
     private TextView tvSelectedDate, tvTotalSales, tvTotalProfit, tvSaleCount;
@@ -95,6 +101,7 @@ public class BillActivity extends AppCompatActivity {
                         .setPositiveButton("确认退款", (dialog, which) -> refundSale(sale, position))
                         .setNegativeButton("取消", null)
                         .show();
+                MediaSoundHelper.getInstance().playRefund(BillActivity.this);
             }
         };
         new ItemTouchHelper(swipeCallback).attachToRecyclerView(rvSales);
@@ -355,6 +362,8 @@ public class BillActivity extends AppCompatActivity {
                     sale.getSaleTime().substring(0, 5) : "");
             loadProductName(sale.getProductId(), holder.tvProduct);
             holder.tvAmount.setText("¥" + (sale.getSellingPrice() * sale.getQuantity()));
+            // 点击整行查看详情
+            holder.itemView.setOnClickListener(v -> showSaleDetailDialog(sale));
 
             double profit = (sale.getSellingPrice() - sale.getCostPrice()) * sale.getQuantity();
             holder.tvDetail.setText("数量: " + sale.getQuantity() +
@@ -398,5 +407,54 @@ public class BillActivity extends AppCompatActivity {
                 tvRefunded = itemView.findViewById(R.id.tv_sale_refunded);
             }
         }
+    }
+    /**
+     * 点击销售记录，弹出详情对话框
+     */
+    private void showSaleDetailDialog(Sale sale) {
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getInstance(BillActivity.this);
+            Product product = db.productDao().getById(sale.getProductId());
+
+            runOnUiThread(() -> {
+                if (product == null) {
+                    Toast.makeText(BillActivity.this, "无法获取商品信息", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BillActivity.this);
+                View view = LayoutInflater.from(BillActivity.this).inflate(R.layout.dialog_sale_detail, null);
+
+                ImageView ivPhoto = view.findViewById(R.id.iv_detail_photo);
+                TextView tvName = view.findViewById(R.id.tv_detail_name);
+                TextView tvInfo = view.findViewById(R.id.tv_detail_info);
+                TextView tvTime = view.findViewById(R.id.tv_detail_time);
+
+                // 商品图片
+                String imagePath = product.getImagePath();
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    ivPhoto.setImageURI(Uri.fromFile(new File(imagePath)));
+                } else {
+                    ivPhoto.setImageResource(android.R.drawable.ic_menu_camera);
+                }
+
+                // 商品名
+                tvName.setText(product.getName());
+
+                // 数量、售价、进价、毛利
+                double profit = (sale.getSellingPrice() - sale.getCostPrice()) * sale.getQuantity();
+                tvInfo.setText("数量: " + sale.getQuantity() +
+                        "  售价: ¥" + sale.getSellingPrice() +
+                        "\n进价: ¥" + sale.getCostPrice() +
+                        "  毛利: ¥" + profit);
+
+                // 时间
+                tvTime.setText(sale.getSaleDate() + " " + sale.getSaleTime());
+
+                builder.setView(view)
+                        .setPositiveButton("关闭", null)
+                        .show();
+            });
+        }).start();
     }
 }

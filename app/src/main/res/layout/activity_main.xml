@@ -3,49 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:background="@color/background">
 
-    <!-- ==================== 顶部状态栏 ==================== -->
+    <!-- ==================== 顶部大刘海 ==================== -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/primary"
         android:gravity="center"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="24dp"
+        android:paddingBottom="12dp"
+        android:paddingHorizontal="16dp">
 
-        <!-- 动态标题：小店名 — 服装店记账系统 -->
+        <!-- 店铺名称 -->
         <TextView
             android:id="@+id/tv_shop_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的小店 — 服装店记账系统"
-            android:textSize="16sp"
-            android:textColor="#333333"
+            android:text="我的小店"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:maxLines="1"
+            android:maxLines="2"
             android:ellipsize="end"
             android:gravity="center" />
 
+        <!-- 在线状态指示器 -->
         <TextView
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🟢 运行正常"
-            android:textSize="14sp"
-            android:textColor="#4CAF50"
-            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="#CCFFFFFF"
             android:layout_marginTop="4dp"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/tv_last_sync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="离线模式"
-            android:textSize="12sp"
-            android:textColor="#999999"
-            android:layout_marginTop="2dp"
             android:gravity="center" />
 
     </LinearLayout>
@@ -54,7 +46,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/surface"
         android:padding="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -73,16 +65,17 @@
 
         <Button
             android:id="@+id/btn_send_command"
-            android:layout_width="56dp"
+            style="@style/AppButton.Medium"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:text="发送"
-            android:textSize="14sp"
-            android:backgroundTint="#2196F3"
+            android:textSize="15sp"
+            android:minWidth="64dp"
             android:layout_marginStart="8dp" />
 
     </LinearLayout>
 
-    <!-- ==================== 快捷记账区域（动态加载分类按钮） ==================== -->
+    <!-- ==================== 快捷记账区域（垂直列表） ==================== -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -90,34 +83,32 @@
         android:orientation="vertical"
         android:padding="12dp"
         android:layout_marginTop="1dp"
-        android:background="#FFFFFF">
+        android:background="@color/surface">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="【快捷记账】"
-            android:textSize="16sp"
-            android:textColor="#333333"
+            android:text="快捷记账"
+            android:textSize="18sp"
+            android:textColor="@color/primary_text"
             android:textStyle="bold"
             android:layout_marginBottom="12dp" />
 
-        <!-- 第一行 -->
-        <LinearLayout
-            android:id="@+id/ll_cat_row1"
+        <!-- 垂直滚动列表容器 -->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-        </LinearLayout>
+            android:layout_height="match_parent">
 
-        <!-- 第二行 -->
-        <LinearLayout
-            android:id="@+id/ll_cat_row2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_category_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:divider="@drawable/divider_green"
+                android:showDividers="middle">
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 
@@ -125,10 +116,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#FFFFFF"
+        android:background="@color/surface"
         android:gravity="center"
         android:orientation="horizontal"
-        android:elevation="8dp">
+        android:elevation="2dp">
 
         <Button
             android:id="@+id/btn_nav_home"
@@ -136,9 +127,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="🏠\n首页"
-            android:textSize="12sp"
-            android:backgroundTint="#E3F2FD"
-            android:textColor="#1976D2" />
+            android:textSize="11sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btn_nav_bill"
@@ -146,9 +139,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="📊\n账单"
-            android:textSize="12sp"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#333333" />
+            android:textSize="11sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/text_secondary" />
 
         <Button
             android:id="@+id/btn_nav_stock"
@@ -156,9 +151,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="📦\n进货"
-            android:textSize="12sp"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#333333" />
+            android:textSize="11sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/text_secondary" />
 
         <Button
             android:id="@+id/btn_nav_my"
@@ -166,9 +163,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="👤\n我的"
-            android:textSize="12sp"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#333333" />
+            android:textSize="11sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/text_secondary" />
 
     </LinearLayout>
 

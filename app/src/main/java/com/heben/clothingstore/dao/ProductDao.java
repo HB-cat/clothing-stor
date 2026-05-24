@@ -35,11 +35,13 @@ public interface ProductDao {
     @Query("SELECT * FROM products WHERE id = :id")
     Product getById(long id);
 
-    @Query("SELECT p.id, p.name, " +
+    @Query("SELECT p.id, p.name, p.image_path, " +
             "COALESCE((SELECT SUM(pur.quantity) FROM purchases pur WHERE pur.product_id = p.id), 0) AS total_purchase, " +
             "COALESCE((SELECT SUM(s.quantity) FROM sales s WHERE s.product_id = p.id AND s.is_refunded = 0), 0) AS total_sale, " +
             "COALESCE((SELECT SUM(pur.quantity) FROM purchases pur WHERE pur.product_id = p.id), 0) - " +
             "COALESCE((SELECT SUM(s.quantity) FROM sales s WHERE s.product_id = p.id AND s.is_refunded = 0), 0) AS current_stock " +
             "FROM products p ORDER BY current_stock ASC")
     List<ProductStock> getProductsWithStock();
+
+    
 }

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 /**
  * 使用指南页面：展示所有功能的操作说明
  */
-public class GuideActivity extends AppCompatActivity {
+public class GuideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

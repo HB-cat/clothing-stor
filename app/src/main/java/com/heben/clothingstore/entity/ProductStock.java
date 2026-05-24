@@ -37,4 +37,10 @@ public class ProductStock {
 
     public int getCurrentStock() { return currentStock; }
     public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+
+    @ColumnInfo(name = "image_path")
+    private String imagePath;
+
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }

@@ -109,9 +109,6 @@ public class CommandParser {
             return result;
         }
 
-        // 执行数据库操作
-        executeCommand(context, result);
-
         String typeName = result.type.equals("sale") ? "卖出" :
                 result.type.equals("purchase") ? "进货" : "退货";
         result.message = "✅ " + typeName + "成功！\n" +
@@ -188,7 +185,7 @@ public class CommandParser {
     /**
      * 执行记账操作
      */
-    private static void executeCommand(Context context, ParseResult result) {
+    public static void executeCommand(Context context, ParseResult result) {
         AppDatabase db = AppDatabase.getInstance(context);
         Product product = findProduct(context, result.productName);
         if (product == null) return;

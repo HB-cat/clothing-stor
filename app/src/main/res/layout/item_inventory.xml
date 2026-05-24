@@ -5,8 +5,18 @@
     android:background="#FFFFFF"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:padding="16dp"
+    android:padding="12dp"
     android:layout_marginBottom="6dp">
+
+    <!-- 商品图片 -->
+    <ImageView
+        android:id="@+id/iv_inventory_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        android:background="@color/background"
+        android:src="@android:drawable/ic_menu_camera"
+        android:layout_marginEnd="12dp"/>
 
     <TextView
         android:id="@+id/tv_inventory_product_name"
@@ -18,26 +28,11 @@
         android:textColor="#333333"
         android:textStyle="bold"/>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_inventory_stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/tv_inventory_stock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="件"
-            android:textSize="12sp"
-            android:textColor="#999999"/>
-    </LinearLayout>
+        android:text="0"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
 </LinearLayout>

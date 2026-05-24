@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <!-- 商品图片 -->
+    <ImageView
+        android:id="@+id/iv_detail_photo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:background="@color/background"
+        android:src="@android:drawable/ic_menu_camera"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- 商品名 -->
+    <TextView
+        android:id="@+id/tv_detail_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品名"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- 详情信息 -->
+    <TextView
+        android:id="@+id/tv_detail_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="数量: 1  售价: ¥120\n进价: ¥60  毛利: ¥60"
+        android:textSize="16sp"
+        android:textColor="#555555"
+        android:gravity="center"
+        android:lineSpacingExtra="6dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- 时间 -->
+    <TextView
+        android:id="@+id/tv_detail_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2026-05-24 14:32:05"
+        android:textSize="14sp"
+        android:textColor="#999999"/>
+
+</LinearLayout>

@@ -1,11 +1,14 @@
 package com.heben.clothingstore;
 
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,25 +24,25 @@ import com.heben.clothingstore.dao.SaleDao;
 import com.heben.clothingstore.entity.Product;
 import com.heben.clothingstore.entity.Sale;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ViewProductsActivity extends AppCompatActivity {
+public class ViewProductsActivity extends BaseActivity {
 
     private RecyclerView rvProducts;
     private ProductAdapter adapter;
     private List<Product> productList = new ArrayList<>();
-    private long categoryId = -1; // -1 表示显示全部
+    private long categoryId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_products);
 
-        // 获取可能传来的分类ID
         categoryId = getIntent().getLongExtra("category_id", -1);
 
         rvProducts = findViewById(R.id.rv_products);
@@ -70,16 +73,23 @@ public class ViewProductsActivity extends AppCompatActivity {
         }).start();
     }
 
-    // 弹出销售确认对话框
     private void showSaleDialog(Product product) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("记一笔 - " + product.getName());
 
-        // 自定义布局
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_sale, null);
+        ImageView ivDialogPhoto = view.findViewById(R.id.iv_dialog_product);
         EditText etQuantity = view.findViewById(R.id.et_quantity);
         EditText etPrice = view.findViewById(R.id.et_price);
         TextView tvDefaultPrice = view.findViewById(R.id.tv_default_price);
+
+        // 加载图片
+        String imagePath = product.getImagePath();
+        if (imagePath != null && !imagePath.isEmpty()) {
+            ivDialogPhoto.setImageURI(Uri.fromFile(new File(imagePath)));
+        } else {
+            ivDialogPhoto.setImageResource(android.R.drawable.ic_menu_camera);
+        }
 
         etQuantity.setText("1");
         etPrice.setText(String.valueOf(product.getSellingPrice()));
@@ -104,7 +114,6 @@ public class ViewProductsActivity extends AppCompatActivity {
                 return;
             }
 
-            // 执行销售
             sellProduct(product, quantity, price);
         });
 
@@ -121,7 +130,7 @@ public class ViewProductsActivity extends AppCompatActivity {
             sale.setProductId(product.getId());
             sale.setQuantity(quantity);
             sale.setSellingPrice(price);
-            sale.setCostPrice(product.getCostPrice()); // 记录当时进价
+            sale.setCostPrice(product.getCostPrice());
             sale.setSaleDate(getCurrentDate());
             sale.setSaleTime(getCurrentTime());
             sale.setRefunded(false);
@@ -134,6 +143,7 @@ public class ViewProductsActivity extends AppCompatActivity {
                     Toast.makeText(ViewProductsActivity.this,
                             "记账成功！卖出 " + quantity + " 件，¥" + (price * quantity),
                             Toast.LENGTH_SHORT).show();
+                    MediaSoundHelper.getInstance().playSale(ViewProductsActivity.this);
                 } else {
                     Toast.makeText(ViewProductsActivity.this, "记账失败，请重试", Toast.LENGTH_SHORT).show();
                 }
@@ -141,7 +151,6 @@ public class ViewProductsActivity extends AppCompatActivity {
         }).start();
     }
 
-    // ========== 辅助方法 ==========
     private String getCurrentDate() {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
@@ -178,7 +187,14 @@ public class ViewProductsActivity extends AppCompatActivity {
             holder.tvCost.setText("进价: ¥" + product.getCostPrice());
             holder.tvSelling.setText("售价: ¥" + product.getSellingPrice());
 
-            // 点击整个条目弹出销售对话框
+            // 显示图片
+            String imagePath = product.getImagePath();
+            if (imagePath != null && !imagePath.isEmpty()) {
+                holder.ivImage.setImageURI(Uri.fromFile(new File(imagePath)));
+            } else {
+                holder.ivImage.setImageResource(android.R.drawable.ic_menu_camera);
+            }
+
             holder.itemView.setOnClickListener(view -> showSaleDialog(product));
         }
 
@@ -189,12 +205,14 @@ public class ViewProductsActivity extends AppCompatActivity {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvName, tvCost, tvSelling;
+            ImageView ivImage;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 tvName = itemView.findViewById(R.id.tv_product_name);
                 tvCost = itemView.findViewById(R.id.tv_cost_price);
                 tvSelling = itemView.findViewById(R.id.tv_selling_price);
+                ivImage = itemView.findViewById(R.id.iv_product_image);
             }
         }
     }

@@ -37,7 +37,7 @@ import java.util.Map;
  * 每个组下方显示已有的属性值标签，可点击标签删除单个值，
  * 点击 + 按钮可批量添加新值。
  */
-public class AttributeGroupsActivity extends AppCompatActivity {
+public class AttributeGroupsActivity extends BaseActivity {
 
     // ========== UI 组件 ==========
     private RecyclerView rvGroups;
@@ -150,6 +150,7 @@ public class AttributeGroupsActivity extends AppCompatActivity {
             db.attributeValueDao().delete(value);
             runOnUiThread(() -> {
                 Toast.makeText(this, "已删除: " + value.getValue(), Toast.LENGTH_SHORT).show();
+                MediaSoundHelper.getInstance().playDelete(AttributeGroupsActivity.this);
                 loadAllData();   // 刷新列表
             });
         }).start();
@@ -237,6 +238,7 @@ public class AttributeGroupsActivity extends AppCompatActivity {
 
             // 删除整个属性组
             holder.btnDelete.setOnClickListener(v -> {
+                MediaSoundHelper.getInstance().playConfirm(AttributeGroupsActivity.this);
                 new AlertDialog.Builder(AttributeGroupsActivity.this)
                         .setTitle("删除属性组")
                         .setMessage("确定要删除「" + group.getName() + "」及其所有属性值吗？")
@@ -266,6 +268,7 @@ public class AttributeGroupsActivity extends AppCompatActivity {
 
                     // 点击标签直接删除该属性值（核心改动）
                     tag.setOnClickListener(v -> {
+                        MediaSoundHelper.getInstance().playConfirm(AttributeGroupsActivity.this);
                         new AlertDialog.Builder(AttributeGroupsActivity.this)
                                 .setTitle("删除属性值")
                                 .setMessage("确定要删除「" + value.getValue() + "」吗？")

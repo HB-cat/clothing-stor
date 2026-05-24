@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:background="@color/background">
 
     <!-- 标题栏 -->
     <LinearLayout
@@ -24,8 +24,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:padding="12dp"
             android:background="#FFFFFF">
 
-            <!-- 商品选择 -->
+            <!-- 选择商品 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,39 +48,133 @@
                 android:layout_height="48dp"
                 android:background="@drawable/edit_bg"
                 android:padding="12dp"
+                android:contentDescription="选择要入库的商品"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- 动态行容器 -->
+            <!-- ===== 固定项 ===== -->
+
+            <!-- 进价 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="进价："
+                    android:textSize="16sp"
+                    android:textColor="#666666"/>
+                <EditText
+                    android:id="@+id/et_cost_price"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_bg"
+                    android:padding="12dp"
+                    android:hint="如：60"
+                    android:inputType="numberDecimal"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <!-- 尺码 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="尺码："
+                    android:textSize="16sp"
+                    android:textColor="#666666"/>
+                <Spinner
+                    android:id="@+id/sp_size"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_bg"
+                    android:padding="12dp"
+                    android:contentDescription="选择尺码"/>
+            </LinearLayout>
+
+            <!-- 颜色 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="颜色："
+                    android:textSize="16sp"
+                    android:textColor="#666666"/>
+                <Spinner
+                    android:id="@+id/sp_color"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_bg"
+                    android:padding="12dp"
+                    android:contentDescription="选择颜色"/>
+            </LinearLayout>
+
+            <!-- 数量 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="数量："
+                    android:textSize="16sp"
+                    android:textColor="#666666"/>
+                <EditText
+                    android:id="@+id/et_quantity"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_bg"
+                    android:padding="12dp"
+                    android:hint="如：5"
+                    android:inputType="number"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <!-- ===== 其他属性（动态生成） ===== -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="进货明细（每行一个颜色/尺码组合）"
+                android:text="其他属性"
                 android:textSize="16sp"
                 android:textColor="#666666"
                 android:layout_marginBottom="8dp"/>
             <LinearLayout
-                android:id="@+id/ll_rows"
+                android:id="@+id/ll_other_attrs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"/>
 
-            <Button
-                android:id="@+id/btn_add_row"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="＋ 添加一行"
-                android:backgroundTint="#2196F3"
-                android:layout_marginTop="8dp"/>
-
+            <!-- 总进货价 -->
             <TextView
                 android:id="@+id/tv_total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="总进货价：¥0"
+                android:text="总金额：¥0"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="8dp"/>
 
+            <!-- 确认入库 -->
             <Button
                 android:id="@+id/btn_save_purchase"
                 android:layout_width="match_parent"

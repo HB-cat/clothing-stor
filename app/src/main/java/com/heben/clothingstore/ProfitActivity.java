@@ -18,7 +18,7 @@ import com.heben.clothingstore.entity.MonthProfit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfitActivity extends AppCompatActivity {
+public class ProfitActivity extends BaseActivity {
 
     private RecyclerView rvProfit;
     private ProfitAdapter adapter;

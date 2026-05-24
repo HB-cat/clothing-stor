@@ -2,23 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.heben.clothingstore">
 
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:label="服装店记账系统"
-        android:theme="@style/Theme.AppCompat.Light">
+        android:theme="@style/AppTheme">
 
+        <!-- 崩溃重启跳板（透明无界面） -->
         <activity
-            android:name=".BillActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PurchaseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyActivity"
-            android:exported="false" />
+            android:name=".RestartActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 主页（启动页） -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -28,50 +26,73 @@
             </intent-filter>
         </activity>
 
+        <!-- 商品管理 -->
         <activity
             android:name=".AddProductActivity"
             android:exported="false" />
         <activity
             android:name=".ViewProductsActivity"
             android:exported="false" />
+
+        <!-- 分类管理 -->
         <activity
             android:name=".CategoriesActivity"
             android:exported="false" />
+
+        <!-- 属性管理 -->
         <activity
             android:name=".AttributeGroupsActivity"
             android:exported="false" />
         <activity
             android:name=".AttributeValuesActivity"
             android:exported="false" />
-        <activity
-            android:name=".PurchaseActivity"
-            android:exported="false" />
 
+        <!-- 销售记账 -->
         <activity
             android:name=".BillActivity"
             android:exported="false" />
 
+        <!-- 进货入库 -->
         <activity
-            android:name=".GuideActivity"
+            android:name=".PurchaseActivity"
             android:exported="false" />
 
+        <!-- 库存查看 -->
         <activity
             android:name=".InventoryActivity"
             android:exported="false" />
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="false" />
+
+        <!-- 热销排行 -->
         <activity
             android:name=".RankActivity"
             android:exported="false" />
 
+        <!-- 利润趋势 -->
         <activity
             android:name=".ProfitActivity"
             android:exported="false" />
 
+        <!-- 我的（设置、数据管理） -->
+        <activity
+            android:name=".MyActivity"
+            android:exported="false" />
 
+        <!-- 使用指南 -->
+        <activity
+            android:name=".GuideActivity"
+            android:exported="false" />
+
+        <!-- 文件共享（拍照功能） -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.heben.clothingstore.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
-
 
 </manifest>

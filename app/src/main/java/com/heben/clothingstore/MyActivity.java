@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -33,11 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * "我的"页面：整合店铺设置、可拖拽排序的功能菜单、固定功能、关于信息。
- * 恢复备份需要授权码 0831。
- */
-public class MyActivity extends AppCompatActivity {
+public class MyActivity extends BaseActivity {
 
     private SharedPreferences prefs;
     private RecyclerView rvMenu;
@@ -56,7 +53,6 @@ public class MyActivity extends AppCompatActivity {
         menuAdapter = new MenuAdapter(menuItems);
         rvMenu.setAdapter(menuAdapter);
 
-        // 拖拽排序
         ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override
@@ -91,6 +87,10 @@ public class MyActivity extends AppCompatActivity {
     // ==================== 根布局 ====================
 
     private View createRootLayout() {
+        // 用 ScrollView 包裹，确保所有内容可以滚动显示
+        ScrollView scrollView = new ScrollView(this);
+        scrollView.setFillViewport(true);
+
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setBackgroundColor(0xFFF5F5F5);
@@ -107,6 +107,12 @@ public class MyActivity extends AppCompatActivity {
         titleBar.addView(title);
         layout.addView(titleBar);
 
+        // 标题长按触发自动化测试
+        title.setOnLongClickListener(v -> {
+            TestRunner.runAll(MyActivity.this);
+            return true;
+        });
+
         // 店铺名称设置（固定顶部）
         addShopNameSection(layout);
 
@@ -118,31 +124,31 @@ public class MyActivity extends AppCompatActivity {
         hint.setPadding(24, 8, 24, 4);
         layout.addView(hint);
 
-        // 可拖拽菜单列表
+        // 可拖拽菜单列表（不再使用 weight，改为包裹内容高度）
         rvMenu = new RecyclerView(this);
         rvMenu.setId(View.generateViewId());
         rvMenu.setPadding(8, 0, 8, 0);
         rvMenu.setClipToPadding(false);
-        rvMenu.setNestedScrollingEnabled(false);
-        // 根据内容自适应高度
-        rvMenu.setLayoutManager(new LinearLayoutManager(this) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;  // 禁用RecyclerView滚动，让外层ScrollView接管
-            }
-        });
+        rvMenu.setNestedScrollingEnabled(true);   // 允许嵌套滚动
+        rvMenu.setLayoutManager(new LinearLayoutManager(this));
+        // 设置最小高度，确保菜单区域可见
+        rvMenu.setMinimumHeight(200);
         layout.addView(rvMenu);
 
-        // 固定功能按钮
+        // 固定功能按钮（这些不会被挤到屏幕外了）
+        addSoundSwitchButton(layout);
         addFixedButton(layout, "📤 导出备份", v -> exportDatabase());
         addFixedButton(layout, "📥 恢复备份", v -> showAuthDialog());
+        addFixedButton(layout, "🧪 运行测试", v -> showTestAuthDialog());
+        addFixedButton(layout, "🔄 初始化系统", v -> showInitAuthDialog());
         addFixedButton(layout, "📖 使用指南", v ->
                 startActivity(new Intent(this, GuideActivity.class)));
 
         // 关于信息
         addAboutSection(layout);
 
-        return layout;
+        scrollView.addView(layout);
+        return scrollView;
     }
 
     // ==================== 店铺名称 ====================
@@ -202,12 +208,16 @@ public class MyActivity extends AppCompatActivity {
         tv.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         tv.setPadding(8, 4, 8, 4);
-        tv.setOnClickListener(listener);
+        tv.setOnClickListener(v -> {
+            android.util.Log.d("SoundCheck", "固定按钮被点击: " + text);
+            MediaSoundHelper.getInstance().playClick(MyActivity.this);  // ← 音效
+            listener.onClick(v);
+        });
         card.addView(tv);
         parent.addView(card);
     }
 
-    // ==================== 授权码验证 ====================
+    // ==================== 授权码验证（恢复备份） ====================
 
     private void showAuthDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -224,11 +234,102 @@ public class MyActivity extends AppCompatActivity {
             if ("0831".equals(code)) {
                 restoreDatabase();
             } else {
+                MediaSoundHelper.getInstance().playError(MyActivity.this);
                 Toast.makeText(this, "❌ 授权码错误", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("取消", null);
         builder.show();
+    }
+
+    // ==================== 授权码验证（运行测试） ====================
+
+    private void showTestAuthDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("🔐 运行测试需要授权");
+
+        final EditText input = new EditText(this);
+        input.setHint("请输入授权码");
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        input.setPadding(32, 16, 32, 16);
+        builder.setView(input);
+
+        builder.setPositiveButton("确认", (dialog, which) -> {
+            String code = input.getText().toString().trim();
+            if ("0831".equals(code)) {
+                Toast.makeText(this, "正在生成测试数据，请稍候...", Toast.LENGTH_SHORT).show();
+                TestRunner.runAll(MyActivity.this);
+            } else {
+                Toast.makeText(this, "❌ 授权码错误", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
+    // ==================== 授权码验证（初始化系统） ====================
+
+    private void showInitAuthDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("🔐 初始化系统需要授权");
+
+        final EditText input = new EditText(this);
+        input.setHint("请输入授权码");
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        input.setPadding(32, 16, 32, 16);
+        builder.setView(input);
+
+        builder.setPositiveButton("确认", (dialog, which) -> {
+            String code = input.getText().toString().trim();
+            if ("0831".equals(code)) {
+                showInitConfirmDialog();
+            } else {
+                Toast.makeText(this, "❌ 授权码错误", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
+    private void showInitConfirmDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("⚠️ 确认初始化")
+                .setMessage("此操作将删除所有数据，恢复到刚安装时的状态。\n\n" +
+                        "包括：所有商品、销售记录、进货记录、自定义分类和属性。\n\n" +
+                        "此操作不可恢复！确定要继续吗？")
+                .setPositiveButton("确认初始化", (dialog, which) -> {
+                    Toast.makeText(this, "正在初始化系统...", Toast.LENGTH_SHORT).show();
+                    initDatabase();
+                })
+                .setNegativeButton("取消", null)
+                .show();
+    }
+
+    private void initDatabase() {
+        new Thread(() -> {
+            try {
+                AppDatabase db = AppDatabase.getInstance(this);
+                db.close();
+
+                File dbFile = getDatabasePath("clothing_store.db");
+                if (dbFile.exists()) {
+                    dbFile.delete();
+                }
+                prefs.edit().clear().apply();
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "✅ 初始化完成，请重启App", Toast.LENGTH_LONG).show();
+                    new android.os.Handler().postDelayed(() -> {
+                        finishAffinity();
+                        System.exit(0);
+                    }, 3000);
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "❌ 初始化失败：" + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        }).start();
     }
 
     // ==================== 关于信息 ====================
@@ -261,7 +362,6 @@ public class MyActivity extends AppCompatActivity {
         menuItems.add(new MenuItem("📈 利润趋势", () ->
                 startActivity(new Intent(this, ProfitActivity.class))));
 
-        // 恢复保存的顺序
         String savedOrder = prefs.getString("menu_order", "");
         if (!savedOrder.isEmpty()) {
             String[] ids = savedOrder.split(",");
@@ -290,8 +390,6 @@ public class MyActivity extends AppCompatActivity {
         prefs.edit().putString("menu_order", sb.toString()).apply();
     }
 
-    // ==================== 菜单项数据类 ====================
-
     private static class MenuItem {
         String id;
         String text;
@@ -303,8 +401,6 @@ public class MyActivity extends AppCompatActivity {
             this.action = action;
         }
     }
-
-    // ==================== RecyclerView 适配器 ====================
 
     private class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
@@ -327,6 +423,8 @@ public class MyActivity extends AppCompatActivity {
             MenuItem item = list.get(position);
             holder.tvText.setText(item.text);
             holder.itemView.setOnClickListener(v -> {
+                android.util.Log.d("SoundCheck", "菜单项被点击: " + item.text);
+                MediaSoundHelper.getInstance().playClick(MyActivity.this);
                 if (item.action != null) item.action.run();
             });
         }
@@ -421,5 +519,38 @@ public class MyActivity extends AppCompatActivity {
         fos.flush();
         fos.close();
         fis.close();
+    }
+    /**
+     * 声音开关按钮
+     */
+    private void addSoundSwitchButton(LinearLayout parent) {
+        LinearLayout card = new LinearLayout(this);
+        card.setPadding(16, 16, 16, 16);
+        card.setBackgroundColor(0xFFFFFFFF);
+        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        cardParams.setMargins(8, 0, 8, 4);
+        card.setLayoutParams(cardParams);
+
+        TextView tv = new TextView(this);
+        updateSoundSwitchText(tv);
+        tv.setTextSize(16);
+        tv.setTextColor(0xFF333333);
+        tv.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        tv.setPadding(8, 4, 8, 4);
+        tv.setOnClickListener(v -> {
+            boolean current = MediaSoundHelper.getInstance().isSoundEnabled(this);
+            MediaSoundHelper.getInstance().setSoundEnabled(this, !current);
+            updateSoundSwitchText(tv);
+            Toast.makeText(this, current ? "🔇 提示音已关闭" : "🔊 提示音已开启", Toast.LENGTH_SHORT).show();
+        });
+        card.addView(tv);
+        parent.addView(card);
+    }
+
+    private void updateSoundSwitchText(TextView tv) {
+        boolean enabled = MediaSoundHelper.getInstance().isSoundEnabled(this);
+        tv.setText(enabled ? "🔊 提示音：开" : "🔇 提示音：关");
     }
 }

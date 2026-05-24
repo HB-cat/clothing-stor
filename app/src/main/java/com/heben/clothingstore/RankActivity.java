@@ -18,7 +18,7 @@ import com.heben.clothingstore.entity.ProductRank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankActivity extends AppCompatActivity {
+public class RankActivity extends BaseActivity {
 
     private RecyclerView rvRank;
     private RankAdapter adapter;

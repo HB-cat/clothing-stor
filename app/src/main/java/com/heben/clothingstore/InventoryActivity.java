@@ -1,9 +1,11 @@
 package com.heben.clothingstore;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,10 +17,11 @@ import com.heben.clothingstore.database.AppDatabase;
 import com.heben.clothingstore.dao.ProductDao;
 import com.heben.clothingstore.entity.ProductStock;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryActivity extends AppCompatActivity {
+public class InventoryActivity extends BaseActivity {
 
     private RecyclerView rvInventory;
     private InventoryAdapter adapter;
@@ -75,11 +78,18 @@ public class InventoryActivity extends AppCompatActivity {
 
             int stock = product.getCurrentStock();
             holder.tvStock.setText(String.valueOf(stock));
-
             if (stock <= 5) {
                 holder.tvStock.setTextColor(0xFFFF5252);
             } else {
                 holder.tvStock.setTextColor(0xFF4CAF50);
+            }
+
+            // 显示图片
+            String imagePath = product.getImagePath();
+            if (imagePath != null && !imagePath.isEmpty()) {
+                holder.ivImage.setImageURI(Uri.fromFile(new File(imagePath)));
+            } else {
+                holder.ivImage.setImageResource(android.R.drawable.ic_menu_camera);
             }
         }
 
@@ -90,11 +100,13 @@ public class InventoryActivity extends AppCompatActivity {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvName, tvStock;
+            ImageView ivImage;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 tvName = itemView.findViewById(R.id.tv_inventory_product_name);
                 tvStock = itemView.findViewById(R.id.tv_inventory_stock);
+                ivImage = itemView.findViewById(R.id.iv_inventory_image);
             }
         }
     }
