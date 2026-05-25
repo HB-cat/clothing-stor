@@ -10,17 +10,16 @@
         android:layout_height="wrap_content"
         android:text="输入属性值，多个用逗号隔开"
         android:textSize="14sp"
-        android:textColor="#666666"
-        android:layout_marginBottom="8dp" />
+        android:textColor="@color/text_secondary"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/et_values"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:gravity="top"
-        android:background="@drawable/edit_bg"
+        android:background="@drawable/bg_card_white"
         android:padding="12dp"
         android:hint="如：春季,夏季,秋季,冬季"
-        android:textSize="16sp" />
-
+        android:textSize="16sp"/>
 </LinearLayout>

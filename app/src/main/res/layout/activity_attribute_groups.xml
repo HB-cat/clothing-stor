@@ -3,63 +3,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@drawable/bg_gradient">
 
-    <!-- 标题栏 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#FF9800"
+        android:background="@color/primary"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp">
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="属性管理"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
     </LinearLayout>
 
-    <!-- 新增属性组 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@drawable/bg_card_white"
         android:padding="12dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp">
 
         <EditText
             android:id="@+id/et_group_name"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@drawable/edit_bg"
+            android:background="#F5F7FA"
             android:padding="12dp"
             android:hint="输入新属性组名，如：季节"
             android:textSize="14sp"
-            android:singleLine="true" />
+            android:singleLine="true"/>
 
         <Button
             android:id="@+id/btn_add_group"
-            android:layout_width="56dp"
+            style="@style/AppButton.Medium"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:text="添加"
             android:textSize="14sp"
-            android:backgroundTint="#4CAF50"
-            android:layout_marginStart="8dp" />
-
+            android:minWidth="56dp"
+            android:maxLines="1"
+            android:ellipsize="none"
+            android:layout_marginStart="8dp"/>
     </LinearLayout>
 
-    <!-- 属性组列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_attribute_groups"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="12dp" />
-
+        android:paddingHorizontal="12dp"
+        android:paddingTop="8dp"/>
 </LinearLayout>

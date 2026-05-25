@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity {
         // 绑定视图
         tvShopTitle = findViewById(R.id.tv_shop_title);
         tvStatus = findViewById(R.id.tv_status);
+        tvStatus.setSelected(true);   // 激活跑马灯滚动
         loadShopName();
 
         // 自动备份

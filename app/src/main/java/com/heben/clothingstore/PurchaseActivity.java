@@ -5,7 +5,7 @@ import android.text.TextWatcher;
 import android.text.Editable;
 import android.view.View;
 import android.widget.*;
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 import com.heben.clothingstore.database.AppDatabase;
 import com.heben.clothingstore.dao.*;
 import com.heben.clothingstore.entity.*;
@@ -46,6 +46,26 @@ public class PurchaseActivity extends BaseActivity {
 
         loadProducts();
         loadAllAttributeGroups();
+
+        Button btnNavHome = findViewById(R.id.btn_nav_home);
+        Button btnNavBill = findViewById(R.id.btn_nav_bill);
+        Button btnNavStock = findViewById(R.id.btn_nav_stock);
+        Button btnNavMy = findViewById(R.id.btn_nav_my);
+
+        btnNavHome.setOnClickListener(v -> {
+            startActivity(new Intent(PurchaseActivity.this, MainActivity.class));
+            finish();
+        });
+        btnNavBill.setOnClickListener(v -> {
+            startActivity(new Intent(PurchaseActivity.this, BillActivity.class));
+            finish();
+        });
+        btnNavStock.setOnClickListener(v ->
+                Toast.makeText(this, "已经是进货", Toast.LENGTH_SHORT).show());
+        btnNavMy.setOnClickListener(v -> {
+            startActivity(new Intent(PurchaseActivity.this, MyActivity.class));
+            finish();
+        });
 
         spProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

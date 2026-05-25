@@ -3,33 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@drawable/bg_gradient">
 
-    <!-- 标题栏 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#4CAF50"
-        android:gravity="center"
-        android:orientation="horizontal"
+        android:background="@color/primary"
+        android:gravity="center_vertical"
         android:paddingHorizontal="16dp">
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="商品列表"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
     </LinearLayout>
 
-    <!-- 商品列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_products"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="12dp" />
-
+        android:paddingHorizontal="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false"/>
 </LinearLayout>

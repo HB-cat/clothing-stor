@@ -3,103 +3,116 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@drawable/bg_gradient">
 
     <!-- 标题栏 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#2196F3"
+        android:background="@color/primary"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp">
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="账单"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="none" />
     </LinearLayout>
 
     <!-- 日/月/年 切换标签 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card_white"
         android:orientation="horizontal"
-        android:layout_marginTop="1dp">
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp"
+        android:padding="6dp">
 
         <Button
             android:id="@+id/btn_tab_day"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:text="日"
-            android:textSize="16sp"
-            android:backgroundTint="#E3F2FD"
-            android:textColor="#1976D2" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_margin="2dp"
+            android:maxLines="1"
+            android:ellipsize="none"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btn_tab_month"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:text="月"
-            android:textSize="16sp"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#333333" />
+            android:textSize="14sp"
+            android:layout_margin="2dp"
+            android:maxLines="1"
+            android:ellipsize="none"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/text_secondary" />
 
         <Button
             android:id="@+id/btn_tab_year"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:text="年"
-            android:textSize="16sp"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#333333" />
+            android:textSize="14sp"
+            android:layout_margin="2dp"
+            android:maxLines="1"
+            android:ellipsize="none"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/text_secondary" />
     </LinearLayout>
 
     <!-- 日期选择区 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:padding="12dp"
+        android:background="@drawable/bg_card_white"
+        android:padding="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:layout_marginTop="1dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="选择日期："
-            android:textSize="15sp"
-            android:textColor="#666666" />
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp">
 
         <TextView
             android:id="@+id/tv_selected_date"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="46dp"
             android:layout_weight="1"
             android:text="点击选择"
-            android:textSize="16sp"
-            android:textColor="#333333"
-            android:textStyle="bold"
-            android:padding="8dp"
-            android:background="@drawable/edit_bg"
+            android:textSize="14sp"
+            android:textColor="@color/text_primary"
+            android:gravity="center"
+            android:background="#F5F7FA"
             android:clickable="true"
-            android:gravity="center" />
+            android:maxLines="1"
+            android:ellipsize="none" />
 
         <Button
             android:id="@+id/btn_query"
             style="@style/AppButton.Medium"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="46dp"
             android:text="查询"
-            android:minWidth="64dp" />
+            android:textSize="15sp"
+            android:minWidth="64dp"
+            android:maxLines="1"
+            android:ellipsize="none"
+            android:background="@drawable/btn_rounded_primary"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
     <!-- 统计卡片 -->
@@ -107,9 +120,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp"
-        android:background="#FFFFFF"
-        android:layout_marginTop="1dp">
+        android:paddingHorizontal="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -117,26 +130,28 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="#E3F2FD"
+            android:background="@drawable/bg_card_white"
             android:padding="12dp"
             android:layout_marginEnd="6dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="销售额"
-                android:textSize="13sp"
-                android:textColor="#666666" />
-
+                android:textSize="12sp"
+                android:textColor="@color/text_hint"
+                android:maxLines="1"
+                android:ellipsize="none" />
             <TextView
                 android:id="@+id/tv_total_sales"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="--"
-                android:textSize="20sp"
-                android:textColor="#1976D2"
+                android:textSize="18sp"
+                android:textColor="@color/primary_text"
                 android:textStyle="bold"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
@@ -145,26 +160,28 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="#E8F5E9"
+            android:background="@drawable/bg_card_white"
             android:padding="12dp"
             android:layout_marginEnd="6dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="毛利"
-                android:textSize="13sp"
-                android:textColor="#666666" />
-
+                android:textSize="12sp"
+                android:textColor="@color/text_hint"
+                android:maxLines="1"
+                android:ellipsize="none" />
             <TextView
                 android:id="@+id/tv_total_profit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="--"
-                android:textSize="20sp"
-                android:textColor="#4CAF50"
+                android:textSize="18sp"
+                android:textColor="@color/primary_text"
                 android:textStyle="bold"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
@@ -173,25 +190,27 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="#FFF3E0"
+            android:background="@drawable/bg_card_white"
             android:padding="12dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="笔数"
-                android:textSize="13sp"
-                android:textColor="#666666" />
-
+                android:textSize="12sp"
+                android:textColor="@color/text_hint"
+                android:maxLines="1"
+                android:ellipsize="none" />
             <TextView
                 android:id="@+id/tv_sale_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="--"
-                android:textSize="20sp"
-                android:textColor="#FF9800"
+                android:textSize="18sp"
+                android:textColor="@color/primary_text"
                 android:textStyle="bold"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:ellipsize="none" />
         </LinearLayout>
     </LinearLayout>
 
@@ -201,11 +220,12 @@
         android:layout_height="wrap_content"
         android:text="销售流水"
         android:textSize="16sp"
-        android:textColor="#333333"
+        android:textColor="@color/primary_text"
         android:textStyle="bold"
-        android:padding="12dp"
-        android:background="#FFFFFF"
-        android:layout_marginTop="1dp" />
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:maxLines="1"
+        android:ellipsize="none" />
 
     <!-- 销售列表 -->
     <androidx.recyclerview.widget.RecyclerView
@@ -213,6 +233,81 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp" />
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="8dp" />
+
+    <!-- 底部导航栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_card_white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <Button
+                android:id="@+id/btn_nav_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="🏠\n首页"
+                android:textSize="11sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:background="@drawable/bg_nav_default"
+                android:textColor="@color/text_secondary"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/btn_nav_bill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="📊\n账单"
+                android:textSize="11sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:background="@drawable/bg_nav_selected"
+                android:textColor="@android:color/white"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/btn_nav_stock"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="📦\n进货"
+                android:textSize="11sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:background="@drawable/bg_nav_default"
+                android:textColor="@color/text_secondary"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/btn_nav_my"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="👤\n我的"
+                android:textSize="11sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:background="@drawable/bg_nav_default"
+                android:textColor="@color/text_secondary"
+                android:gravity="center" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
