@@ -55,3 +55,80 @@
 > 库存通过 `累计进货 - 累计销售（不含退款）` 实时计算，保证数据一致性。
 
 ## 📁 项目结构
+
+app/src/main/java/com/heben/clothingstore/
+├── MainActivity.java # 首页（分类列表、快捷指令、底部导航）
+├── AddProductActivity.java # 添加商品（动态属性、拍照）
+├── ViewProductsActivity.java # 商品列表（点击销售）
+├── CategoriesActivity.java # 分类管理
+├── AttributeGroupsActivity.java # 属性组管理
+├── AttributeValuesActivity.java # 属性值管理
+├── PurchaseActivity.java # 进货入库（多属性行）
+├── BillActivity.java # 账单查询（日历+左滑退款）
+├── InventoryActivity.java # 库存查看
+├── RankActivity.java # 热销排行
+├── ProfitActivity.java # 利润趋势
+├── MyActivity.java # 我的（设置/数据管理/可拖拽菜单）
+├── GuideActivity.java # 使用指南
+├── BaseActivity.java # Activity基类（音效/过渡动画）
+├── CommandParser.java # 指令记账解析器
+├── DatabaseInitializer.java # 数据库初始化（预置数据）
+├── AutoBackupHelper.java # 自动备份工具
+├── MediaSoundHelper.java # 音效管理工具
+├── TestRunner.java # 内置自动化测试
+├── entity/ # 实体类（7个）
+├── dao/ # 数据访问接口（7个）
+└── database/
+└── AppDatabase.java # 数据库管理器（单例模式）
+
+
+## 🚀 使用说明
+
+### 安装方式
+1. 用 Android Studio 打开项目
+2. Build → Build APK
+3. 将 `app-debug.apk` 安装到安卓平板或手机
+4. 首次启动自动初始化预置数据
+
+### 基本操作流程
+- **第一次使用**：去"我的"添加商品（定义名称、属性、售价）
+- **进货入库**：去"进货"选择商品，填写数量进价
+- **日常销售**：首页点分类→点商品→确认卖出
+- **看账**：去"账单"选择日期查询
+- **退货**：账单页面左滑销售记录
+
+### 快捷指令
+首页输入框支持文字指令记账：
+- `卖了连衣裙一件90块` → 卖出1件连衣裙，售价90
+- `进了连衣裙5件60块` → 进货5件连衣裙，进价60
+- `退了连衣裙一件` → 退回最近一笔该商品销售
+
+### 数据导出
+- **自动备份**：每天首次启动时自动备份到 `Download/记账备份/`，保留最近7天
+- **手动导出**："我的" → 导出备份 → 文件保存在下载文件夹
+- **恢复数据**："我的" → 恢复备份 → 需输入授权码 `0831`
+
+## ⚠️ 注意事项
+
+- 本应用为纯离线设计，所有数据存储在设备本地
+- 建议定期导出备份，通过微信等渠道发送给自己保存
+- 删除操作均有二次确认，防止误触
+- 进价录入后不可修改（保护历史数据正确性）
+- 账单数据默认隐藏，需主动查询才显示（保护隐私）
+
+## 🎨 视觉风格
+
+- **主题色**：稳重绿（#43A047）
+- **背景**：绿色渐变
+- **按钮**：28dp大圆角，绿色实心白字
+- **卡片**：16dp圆角，半透明白色背景
+- **导航**：圆角胶囊，选中绿底白字
+
+## 👤 作者
+
+**HenBen_Cat**  
+计算机科学与技术专业 · 毕业设计作品
+
+---
+
+> 本项目遵循开源协议。仅供学习交流使用。
