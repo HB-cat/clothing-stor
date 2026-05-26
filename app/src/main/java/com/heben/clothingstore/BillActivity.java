@@ -89,10 +89,10 @@ public class BillActivity extends BaseActivity {
         new ItemTouchHelper(swipeCallback).attachToRecyclerView(rvSales);
 
         // 底部导航
-        findViewById(R.id.btn_nav_home).setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
+        findViewById(R.id.btn_nav_home).setOnClickListener(v -> navigateTo(MainActivity.class));
         findViewById(R.id.btn_nav_bill).setOnClickListener(v -> Toast.makeText(this, "已经是账单", Toast.LENGTH_SHORT).show());
-        findViewById(R.id.btn_nav_stock).setOnClickListener(v -> { startActivity(new Intent(this, PurchaseActivity.class)); finish(); });
-        findViewById(R.id.btn_nav_my).setOnClickListener(v -> { startActivity(new Intent(this, MyActivity.class)); finish(); });
+        findViewById(R.id.btn_nav_stock).setOnClickListener(v -> navigateTo(PurchaseActivity.class));
+        findViewById(R.id.btn_nav_my).setOnClickListener(v -> navigateTo(MyActivity.class));
 
         clearSummary();
         btnTabDay.setOnClickListener(v -> switchMode("day"));

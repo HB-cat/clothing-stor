@@ -89,14 +89,10 @@ public class MainActivity extends BaseActivity {
         Button btnNavStock = findViewById(R.id.btn_nav_stock);
         Button btnNavMy = findViewById(R.id.btn_nav_my);
 
-        btnNavHome.setOnClickListener(view ->
-                Toast.makeText(this, "已经是首页", Toast.LENGTH_SHORT).show());
-        btnNavBill.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, BillActivity.class)));
-        btnNavStock.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, PurchaseActivity.class)));
-        btnNavMy.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, MyActivity.class)));
+        btnNavHome.setOnClickListener(view -> Toast.makeText(this, "已经是首页", Toast.LENGTH_SHORT).show());
+        btnNavBill.setOnClickListener(view -> navigateTo(BillActivity.class));
+        btnNavStock.setOnClickListener(view -> navigateTo(PurchaseActivity.class));
+        btnNavMy.setOnClickListener(view -> navigateTo(MyActivity.class));
     }
 
     @Override

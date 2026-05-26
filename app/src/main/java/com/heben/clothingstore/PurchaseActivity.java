@@ -52,21 +52,10 @@ public class PurchaseActivity extends BaseActivity {
         Button btnNavStock = findViewById(R.id.btn_nav_stock);
         Button btnNavMy = findViewById(R.id.btn_nav_my);
 
-        btnNavHome.setOnClickListener(v -> {
-            startActivity(new Intent(PurchaseActivity.this, MainActivity.class));
-            finish();
-        });
-        btnNavBill.setOnClickListener(v -> {
-            startActivity(new Intent(PurchaseActivity.this, BillActivity.class));
-            finish();
-        });
-        btnNavStock.setOnClickListener(v ->
-                Toast.makeText(this, "已经是进货", Toast.LENGTH_SHORT).show());
-        btnNavMy.setOnClickListener(v -> {
-            startActivity(new Intent(PurchaseActivity.this, MyActivity.class));
-            finish();
-        });
-
+        btnNavHome.setOnClickListener(v -> navigateTo(MainActivity.class));
+        btnNavBill.setOnClickListener(v -> navigateTo(BillActivity.class));
+        btnNavStock.setOnClickListener(v -> Toast.makeText(this, "已经是进货", Toast.LENGTH_SHORT).show());
+        btnNavMy.setOnClickListener(v -> navigateTo(MyActivity.class));
         spProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -84,6 +84,12 @@ public class MyActivity extends BaseActivity {
 
     // ==================== 根布局 ====================
     private View createRootLayout() {
+        // 根布局：垂直排列，内容区 + 导航栏
+        LinearLayout rootLayout = new LinearLayout(this);
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setBackgroundColor(getColor(android.R.color.transparent));
+
+        // 滚动内容区域
         ScrollView scrollView = new ScrollView(this);
         scrollView.setFillViewport(true);
 
@@ -91,19 +97,31 @@ public class MyActivity extends BaseActivity {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setBackgroundColor(getColor(android.R.color.transparent));
 
-        // 标题
+        // 标题栏（与账单、进货页面统一：绿色背景、白色文字、56dp高）
         LinearLayout titleBar = new LinearLayout(this);
-        titleBar.setPadding(24, 24, 24, 16);
+        titleBar.setBackgroundColor(getColor(R.color.primary));
+        titleBar.setGravity(Gravity.CENTER_VERTICAL);
+        titleBar.setPadding(24, 0, 24, 0);
+        titleBar.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (int) (56 * getResources().getDisplayMetrics().density)));
+
         TextView title = new TextView(this);
         title.setText("👤 我的");
-        title.setTextSize(24);
-        title.setTextColor(getColor(R.color.primary_text));
+        title.setTextSize(20);
+        title.setTextColor(getColor(android.R.color.white));
         title.setTypeface(null, android.graphics.Typeface.BOLD);
         titleBar.addView(title);
+
         layout.addView(titleBar);
-        title.setOnLongClickListener(v -> { TestRunner.runAll(MyActivity.this); return true; });
+
+        title.setOnLongClickListener(v -> {
+            TestRunner.runAll(MyActivity.this);
+            return true;
+        });
 
         addShopNameSection(layout);
+
         TextView hint = new TextView(this);
         hint.setText("长按 ☰ 拖拽调整顺序");
         hint.setTextSize(12);
@@ -128,11 +146,77 @@ public class MyActivity extends BaseActivity {
         addFixedButton(layout, "📖 使用指南", v -> startActivity(new Intent(this, GuideActivity.class)));
 
         addAboutSection(layout);
-        addBottomNav(layout);
 
         scrollView.addView(layout);
-        return scrollView;
+
+        // 底部导航（固定）
+        LinearLayout bottomNav = createBottomNav();
+
+        // 组装
+        LinearLayout.LayoutParams scrollParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 0, 1);
+        rootLayout.addView(scrollView, scrollParams);
+
+        LinearLayout.LayoutParams navParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        rootLayout.addView(bottomNav, navParams);
+
+        return rootLayout;
     }
+
+    // 创建底部导航栏，样式与 activity_main.xml 等完全一致
+    private LinearLayout createBottomNav() {
+        // 外层容器：负责左右内边距、上下内边距，透明背景
+        LinearLayout wrapper = new LinearLayout(this);
+        wrapper.setBackgroundColor(getColor(android.R.color.transparent));
+        wrapper.setGravity(Gravity.CENTER);
+        wrapper.setOrientation(LinearLayout.HORIZONTAL);
+        // 左右 12dp，上 6dp，下 10dp，与 XML 一致
+        int px12 = (int) (12 * getResources().getDisplayMetrics().density);
+        int px6 = (int) (6 * getResources().getDisplayMetrics().density);
+        int px10 = (int) (10 * getResources().getDisplayMetrics().density);
+        wrapper.setPadding(px12, px6, px12, px10);
+
+        // 内层胶囊容器：固定高度 56dp，白色半透明背景，圆角卡片
+        LinearLayout nav = new LinearLayout(this);
+        nav.setBackground(getDrawable(R.drawable.bg_card_white));
+        nav.setOrientation(LinearLayout.HORIZONTAL);
+        nav.setGravity(Gravity.CENTER);
+        // 内边距 4dp，与 XML 的 padding="4dp" 一致
+        int px4 = (int) (4 * getResources().getDisplayMetrics().density);
+        nav.setPadding(px4, px4, px4, px4);
+        // 固定高度 56dp
+        int height = (int) (56 * getResources().getDisplayMetrics().density);
+        LinearLayout.LayoutParams navParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, height);
+        nav.setLayoutParams(navParams);
+
+        // 创建四个导航按钮（与 XML 中的按钮属性完全一致）
+        Button btnHome = createNavButton("🏠\n首页");
+        btnHome.setBackground(getDrawable(R.drawable.bg_nav_default));
+        btnHome.setOnClickListener(v -> navigateTo(MainActivity.class));
+        nav.addView(btnHome);
+
+        Button btnBill = createNavButton("📊\n账单");
+        btnBill.setBackground(getDrawable(R.drawable.bg_nav_default));
+        btnBill.setOnClickListener(v -> navigateTo(BillActivity.class));
+        nav.addView(btnBill);
+
+        Button btnStock = createNavButton("📦\n进货");
+        btnStock.setBackground(getDrawable(R.drawable.bg_nav_default));
+        btnStock.setOnClickListener(v -> navigateTo(PurchaseActivity.class));
+        nav.addView(btnStock);
+
+        Button btnMy = createNavButton("👤\n我的");
+        btnMy.setBackground(getDrawable(R.drawable.bg_nav_selected));
+        btnMy.setTextColor(getColor(android.R.color.white));
+        btnMy.setOnClickListener(v -> Toast.makeText(this, "已经是我的", Toast.LENGTH_SHORT).show());
+        nav.addView(btnMy);
+
+        wrapper.addView(nav);
+        return wrapper;
+    }
+
 
     private void addBottomNav(LinearLayout parent) {
         LinearLayout wrapper = new LinearLayout(this);

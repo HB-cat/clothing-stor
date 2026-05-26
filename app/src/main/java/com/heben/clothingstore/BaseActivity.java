@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.Window;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -65,5 +66,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         int x = location[0];
         int y = location[1];
         return (rx >= x && rx <= x + view.getWidth() && ry >= y && ry <= y + view.getHeight());
+    }
+
+    /**
+     * 统一的底部导航方法，带淡入淡出动画
+     */
+    public void navigateTo(Class<?> targetActivity) {
+        Intent intent = new Intent(this, targetActivity);
+        startActivity(intent);
+        // 淡入淡出过渡动画
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        // 结束当前页面，避免返回栈堆积
+        finish();
     }
 }
