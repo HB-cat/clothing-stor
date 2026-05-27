@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
+
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -29,6 +30,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +45,9 @@ public class MyActivity extends BaseActivity {
     private RecyclerView rvMenu;
     private MenuAdapter menuAdapter;
     private List<MenuItem> menuItems = new ArrayList<>();
+
+    private static final int REQUEST_EXPORT = 200;
+    private static final int REQUEST_IMPORT = 201;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,42 +224,7 @@ public class MyActivity extends BaseActivity {
     }
 
 
-    private void addBottomNav(LinearLayout parent) {
-        LinearLayout wrapper = new LinearLayout(this);
-        wrapper.setPadding(0, 6, 0, 10);   // 左右 padding 改为 0
-        wrapper.setBackgroundColor(getColor(android.R.color.transparent));
-        LinearLayout nav = new LinearLayout(this);
-        nav.setBackground(getDrawable(R.drawable.bg_card_white));
-        nav.setOrientation(LinearLayout.HORIZONTAL);
-        nav.setGravity(Gravity.CENTER);
-        nav.setPadding(6, 6, 6, 6);
-        nav.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        Button btnHome = createNavButton("🏠\n首页");
-        btnHome.setBackground(getDrawable(R.drawable.bg_nav_default));
-        btnHome.setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
-        nav.addView(btnHome);
-
-        Button btnBill = createNavButton("📊\n账单");
-        btnBill.setBackground(getDrawable(R.drawable.bg_nav_default));
-        btnBill.setOnClickListener(v -> { startActivity(new Intent(this, BillActivity.class)); finish(); });
-        nav.addView(btnBill);
-
-        Button btnStock = createNavButton("📦\n进货");
-        btnStock.setBackground(getDrawable(R.drawable.bg_nav_default));
-        btnStock.setOnClickListener(v -> { startActivity(new Intent(this, PurchaseActivity.class)); finish(); });
-        nav.addView(btnStock);
-
-        Button btnMy = createNavButton("👤\n我的");
-        btnMy.setBackground(getDrawable(R.drawable.bg_nav_selected));
-        btnMy.setTextColor(getColor(android.R.color.white));
-        btnMy.setOnClickListener(v -> Toast.makeText(this, "已经是我的", Toast.LENGTH_SHORT).show());
-        nav.addView(btnMy);
-
-        wrapper.addView(nav);
-        parent.addView(wrapper);
-    }
 
     private Button createNavButton(String text) {
         Button btn = new Button(this);
@@ -457,35 +428,22 @@ public class MyActivity extends BaseActivity {
 
     // ==================== 导出/恢复 ====================
     private void exportDatabase() {
-        new Thread(() -> {
-            try {
-                File dbFile = getDatabasePath("clothing_store.db");
-                if (!dbFile.exists()) { runOnUiThread(() -> Toast.makeText(this, "数据库文件不存在", Toast.LENGTH_SHORT).show()); return; }
-                String name = "服装店数据_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date()) + ".db";
-                File dest = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
-                copyFile(dbFile, dest);
-                runOnUiThread(() -> Toast.makeText(this, "✅ 已导出：" + name, Toast.LENGTH_LONG).show());
-            } catch (IOException e) { runOnUiThread(() -> Toast.makeText(this, "❌ 导出失败：" + e.getMessage(), Toast.LENGTH_LONG).show()); }
-        }).start();
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/octet-stream");
+        String fileName = "服装店数据_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date()) + ".db";
+        intent.putExtra(Intent.EXTRA_TITLE, fileName);
+        startActivityForResult(intent, REQUEST_EXPORT);
     }
 
     private void restoreDatabase() {
-        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "记账备份");
-        if (!dir.exists() || dir.listFiles() == null || dir.listFiles().length == 0) { Toast.makeText(this, "没有备份文件", Toast.LENGTH_SHORT).show(); return; }
-        File[] files = dir.listFiles((d, n) -> n.endsWith(".db"));
-        String[] names = new String[files.length]; for (int i = 0; i < files.length; i++) names[i] = files[i].getName();
-        new AlertDialog.Builder(this).setTitle("选择备份").setItems(names, (d, w) -> new AlertDialog.Builder(this).setTitle("确认恢复").setMessage("恢复「" + names[w] + "」？")
-                .setPositiveButton("确认", (dd, ww) -> new Thread(() -> {
-                    try { AppDatabase.getInstance(this).close(); copyFile(files[w], getDatabasePath("clothing_store.db")); runOnUiThread(() -> Toast.makeText(this, "恢复成功，请重启App", Toast.LENGTH_LONG).show()); }
-                    catch (IOException e) { runOnUiThread(() -> Toast.makeText(this, "恢复失败：" + e.getMessage(), Toast.LENGTH_LONG).show()); }
-                }).start()).setNegativeButton("取消", null).show()).setNegativeButton("取消", null).show();
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");  // 允许所有文件类型，用户选择 .db 文件
+        startActivityForResult(intent, REQUEST_IMPORT);
     }
 
-    private void copyFile(File s, File d) throws IOException {
-        FileInputStream in = new FileInputStream(s); FileOutputStream out = new FileOutputStream(d);
-        byte[] buf = new byte[1024]; int len; while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
-        out.flush(); out.close(); in.close();
-    }
+
 
     private void addSoundSwitchButton(LinearLayout parent) {
         LinearLayout card = new LinearLayout(this);
@@ -524,5 +482,84 @@ public class MyActivity extends BaseActivity {
 
     private void updateSoundSwitchText(TextView tv) {
         tv.setText(MediaSoundHelper.getInstance().isSoundEnabled(this) ? "🔊 提示音：开" : "🔇 提示音：关");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK || data == null || data.getData() == null) {
+            // 用户取消了操作
+            return;
+        }
+
+        Uri uri = data.getData();
+
+        if (requestCode == REQUEST_EXPORT) {
+            // 导出：将数据库文件复制到用户选定的位置
+            new Thread(() -> {
+                try {
+                    File dbFile = getDatabasePath("clothing_store.db");
+                    if (!dbFile.exists()) {
+                        runOnUiThread(() -> Toast.makeText(this, "数据库文件不存在", Toast.LENGTH_SHORT).show());
+                        return;
+                    }
+
+                    InputStream in = new FileInputStream(dbFile);
+                    OutputStream out = getContentResolver().openOutputStream(uri);
+                    if (out != null) {
+                        byte[] buf = new byte[1024];
+                        int len;
+                        while ((len = in.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+                        out.flush();
+                        out.close();
+                    }
+                    in.close();
+
+                    runOnUiThread(() -> Toast.makeText(this, "✅ 数据已导出！", Toast.LENGTH_LONG).show());
+                } catch (IOException e) {
+                    runOnUiThread(() -> Toast.makeText(this, "❌ 导出失败：" + e.getMessage(), Toast.LENGTH_LONG).show());
+                }
+            }).start();
+
+        } else if (requestCode == REQUEST_IMPORT) {
+            // 恢复：弹出确认框
+            new AlertDialog.Builder(this)
+                    .setTitle("确认恢复")
+                    .setMessage("将用选定的文件覆盖当前所有数据，确定吗？")
+                    .setPositiveButton("确认恢复", (dialog, which) -> {
+                        new Thread(() -> {
+                            try {
+                                AppDatabase.getInstance(MyActivity.this).close();
+
+                                File dbFile = getDatabasePath("clothing_store.db");
+                                InputStream in = getContentResolver().openInputStream(uri);
+                                FileOutputStream out = new FileOutputStream(dbFile);
+                                byte[] buf = new byte[1024];
+                                int len;
+                                while ((len = in.read(buf)) > 0) {
+                                    out.write(buf, 0, len);
+                                }
+                                out.flush();
+                                out.close();
+                                in.close();
+
+                                runOnUiThread(() -> {
+                                    Toast.makeText(MyActivity.this, "✅ 恢复成功！请重启App", Toast.LENGTH_LONG).show();
+                                    new android.os.Handler().postDelayed(() -> {
+                                        finishAffinity();
+                                        System.exit(0);
+                                    }, 3000);
+                                });
+                            } catch (IOException e) {
+                                runOnUiThread(() -> Toast.makeText(MyActivity.this, "❌ 恢复失败：" + e.getMessage(), Toast.LENGTH_LONG).show());
+                            }
+                        }).start();
+                    })
+                    .setNegativeButton("取消", null)
+                    .show();
+        }
     }
 }
