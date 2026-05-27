@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,16 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heben.clothingstore.database.AppDatabase;
 import com.heben.clothingstore.dao.SaleDao;
-import com.heben.clothingstore.dao.ProductDao;
 import com.heben.clothingstore.entity.Sale;
 import com.heben.clothingstore.entity.Product;
 
@@ -32,6 +33,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+
 
 public class BillActivity extends BaseActivity {
 
@@ -49,6 +52,10 @@ public class BillActivity extends BaseActivity {
     private TextView tvDialogMonthYear;
     private GridLayout glCalendar;
     private AlertDialog currentDialog;
+
+    private NumberPicker npWheel;
+    private LinearLayout llCalendarContent;
+    private LinearLayout llWeekHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +111,10 @@ public class BillActivity extends BaseActivity {
             loadSales();
         });
 
+        // 默认切换到“日”模式，自动设置当天日期
         switchMode("day");
+        selectedDateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        tvSelectedDate.setText(selectedDateStr);
     }
 
     private void refundSale(Sale sale, int position) {
@@ -124,57 +134,263 @@ public class BillActivity extends BaseActivity {
         saleList.clear();
         adapter.notifyDataSetChanged();
         btnTabDay.setBackgroundTintList(getColorStateList(mode.equals("day") ? android.R.color.holo_green_light : android.R.color.white));
+        btnTabDay.setTextColor(mode.equals("day") ? getColor(android.R.color.white) : getColor(R.color.text_secondary));
         btnTabMonth.setBackgroundTintList(getColorStateList(mode.equals("month") ? android.R.color.holo_green_light : android.R.color.white));
+        btnTabMonth.setTextColor(mode.equals("month") ? getColor(android.R.color.white) : getColor(R.color.text_secondary));
         btnTabYear.setBackgroundTintList(getColorStateList(mode.equals("year") ? android.R.color.holo_green_light : android.R.color.white));
+        btnTabYear.setTextColor(mode.equals("year") ? getColor(android.R.color.white) : getColor(R.color.text_secondary));
     }
 
     private void showCalendarDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_calendar, null);
         tvDialogMonthYear = view.findViewById(R.id.tv_cal_month_year);
-        glCalendar = view.findViewById(R.id.gl_calendar);
+        llCalendarContent = view.findViewById(R.id.ll_calendar_content);
+        llWeekHeader = view.findViewById(R.id.ll_week_header);
+        npWheel = view.findViewById(R.id.np_wheel);
         Button btnPrev = view.findViewById(R.id.btn_cal_prev_month);
         Button btnNext = view.findViewById(R.id.btn_cal_next_month);
+
         dialogCal = (Calendar) selectedCal.clone();
         renderCalendar();
-        btnPrev.setOnClickListener(v -> { if (currentMode.equals("day") || currentMode.equals("month")) dialogCal.add(Calendar.MONTH, -1); else dialogCal.add(Calendar.YEAR, -1); renderCalendar(); });
-        btnNext.setOnClickListener(v -> { if (currentMode.equals("day") || currentMode.equals("month")) dialogCal.add(Calendar.MONTH, 1); else dialogCal.add(Calendar.YEAR, 1); renderCalendar(); });
+
+        btnPrev.setOnClickListener(v -> {
+            if (currentMode.equals("day")) dialogCal.add(Calendar.MONTH, -1);
+            else if (currentMode.equals("month")) dialogCal.add(Calendar.YEAR, -1);
+            else dialogCal.add(Calendar.YEAR, -1);
+            renderCalendar();
+        });
+        btnNext.setOnClickListener(v -> {
+            if (currentMode.equals("day")) dialogCal.add(Calendar.MONTH, 1);
+            else if (currentMode.equals("month")) dialogCal.add(Calendar.YEAR, 1);
+            else dialogCal.add(Calendar.YEAR, 1);
+            renderCalendar();
+        });
+
+        // 滚轮监听
+        npWheel.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            if (currentMode.equals("month")) {
+                selectedCal = (Calendar) dialogCal.clone();
+                selectedCal.set(Calendar.MONTH, newVal - 1);
+                selectedDateStr = new SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(selectedCal.getTime());
+            } else if (currentMode.equals("year")) {
+                selectedCal = Calendar.getInstance();
+                selectedCal.set(Calendar.YEAR, newVal);
+                selectedDateStr = String.valueOf(newVal);
+            }
+        });
+
+        builder.setView(view);
+        // 确认按钮：将滚轮选中的值同步到日期显示
+        builder.setPositiveButton("确定", (d, w) -> {
+            if (currentMode.equals("month") || currentMode.equals("year")) {
+                tvSelectedDate.setText(selectedDateStr);
+            }
+        });
+        builder.setNegativeButton("取消", null);
+
         currentDialog = builder.create();
         currentDialog.show();
     }
 
-    private void renderCalendar() {
-        glCalendar.removeAllViews();
+    private void renderCalendar(LinearLayout container) {
+        container.removeAllViews();
+
         if (currentMode.equals("day")) {
             tvDialogMonthYear.setText(new SimpleDateFormat("yyyy年M月", Locale.getDefault()).format(dialogCal.getTime()));
-            Calendar cal = (Calendar) dialogCal.clone(); cal.set(Calendar.DAY_OF_MONTH, 1);
-            int firstDayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1, daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-            for (int i = 0; i < firstDayOfWeek; i++) addDayCell("", false);
-            for (int day = 1; day <= daysInMonth; day++) {
-                final int d = day; TextView tv = new TextView(this); tv.setText(String.valueOf(day)); tv.setTextSize(15); tv.setTextColor(0xFF333333); tv.setGravity(android.view.Gravity.CENTER); tv.setPadding(8, 12, 8, 12);
-                tv.setOnClickListener(v -> { Calendar chosen = (Calendar) dialogCal.clone(); chosen.set(Calendar.DAY_OF_MONTH, d); selectedCal = chosen; selectedDateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedCal.getTime()); tvSelectedDate.setText(selectedDateStr); if (currentDialog != null) currentDialog.dismiss(); });
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams(); params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, 1f); params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, 1f); tv.setLayoutParams(params); glCalendar.addView(tv);
+            Calendar cal = (Calendar) dialogCal.clone();
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            int firstDayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+            int totalCells = firstDayOfWeek + daysInMonth;
+            int rows = (int) Math.ceil(totalCells / 7.0);
+            int cellIndex = 0;
+
+            for (int r = 0; r < rows; r++) {
+                LinearLayout row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                for (int c = 0; c < 7; c++) {
+                    TextView tv = new TextView(this);
+                    tv.setGravity(Gravity.CENTER);
+                    tv.setTextSize(15);
+                    tv.setPadding(8, 12, 8, 12);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
+                            LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+                    tv.setLayoutParams(params);
+
+                    if (cellIndex < firstDayOfWeek || cellIndex >= firstDayOfWeek + daysInMonth) {
+                        tv.setText("");
+                        tv.setClickable(false);
+                    } else {
+                        final int day = cellIndex - firstDayOfWeek + 1;
+                        tv.setText(String.valueOf(day));
+                        tv.setTextColor(0xFF333333);
+                        tv.setOnClickListener(v -> {
+                            Calendar chosen = (Calendar) dialogCal.clone();
+                            chosen.set(Calendar.DAY_OF_MONTH, day);
+                            selectedCal = chosen;
+                            selectedDateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedCal.getTime());
+                            tvSelectedDate.setText(selectedDateStr);
+                            if (currentDialog != null) currentDialog.dismiss();
+                        });
+                    }
+                    row.addView(tv);
+                    cellIndex++;
+                }
+                container.addView(row);
             }
         } else if (currentMode.equals("month")) {
             tvDialogMonthYear.setText(new SimpleDateFormat("yyyy年", Locale.getDefault()).format(dialogCal.getTime()));
             for (int m = 1; m <= 12; m++) {
-                final int month = m; TextView tv = new TextView(this); tv.setText(m + "月"); tv.setTextSize(15); tv.setTextColor(0xFF333333); tv.setGravity(android.view.Gravity.CENTER); tv.setPadding(12, 16, 12, 16);
-                tv.setOnClickListener(v -> { selectedCal = (Calendar) dialogCal.clone(); selectedCal.set(Calendar.MONTH, month - 1); selectedDateStr = new SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(selectedCal.getTime()); tvSelectedDate.setText(selectedDateStr); if (currentDialog != null) currentDialog.dismiss(); });
-                glCalendar.addView(tv);
+                final int month = m;
+                TextView tv = new TextView(this);
+                tv.setText(m + "月");
+                tv.setTextSize(15);
+                tv.setTextColor(0xFF333333);
+                tv.setGravity(Gravity.CENTER);
+                tv.setPadding(12, 16, 12, 16);
+                tv.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                tv.setOnClickListener(v -> {
+                    selectedCal = (Calendar) dialogCal.clone();
+                    selectedCal.set(Calendar.MONTH, month - 1);
+                    selectedDateStr = new SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(selectedCal.getTime());
+                    tvSelectedDate.setText(selectedDateStr);
+                    if (currentDialog != null) currentDialog.dismiss();
+                });
+                container.addView(tv);
             }
         } else if (currentMode.equals("year")) {
-            tvDialogMonthYear.setText("选择年份"); int thisYear = dialogCal.get(Calendar.YEAR);
+            tvDialogMonthYear.setText("选择年份");
+            int thisYear = dialogCal.get(Calendar.YEAR);
             for (int y = thisYear - 5; y <= thisYear + 5; y++) {
-                final int year = y; TextView tv = new TextView(this); tv.setText(String.valueOf(year)); tv.setTextSize(15); tv.setTextColor(0xFF333333); tv.setGravity(android.view.Gravity.CENTER); tv.setPadding(12, 16, 12, 16);
-                tv.setOnClickListener(v -> { selectedCal = Calendar.getInstance(); selectedCal.set(Calendar.YEAR, year); selectedDateStr = String.valueOf(year); tvSelectedDate.setText(selectedDateStr); if (currentDialog != null) currentDialog.dismiss(); });
-                glCalendar.addView(tv);
+                final int year = y;
+                TextView tv = new TextView(this);
+                tv.setText(String.valueOf(year));
+                tv.setTextSize(15);
+                tv.setTextColor(0xFF333333);
+                tv.setGravity(Gravity.CENTER);
+                tv.setPadding(12, 16, 12, 16);
+                tv.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                tv.setOnClickListener(v -> {
+                    selectedCal = Calendar.getInstance();
+                    selectedCal.set(Calendar.YEAR, year);
+                    selectedDateStr = String.valueOf(year);
+                    tvSelectedDate.setText(selectedDateStr);
+                    if (currentDialog != null) currentDialog.dismiss();
+                });
+                container.addView(tv);
             }
         }
     }
 
+    private void renderCalendar() {
+        if (currentMode.equals("day")) {
+            // 日模式：显示日历网格
+            llCalendarContent.setVisibility(View.VISIBLE);
+            llWeekHeader.setVisibility(View.VISIBLE);
+            npWheel.setVisibility(View.GONE);
+
+            tvDialogMonthYear.setText(new SimpleDateFormat("yyyy年M月", Locale.getDefault()).format(dialogCal.getTime()));
+            llCalendarContent.removeAllViews();
+
+            Calendar cal = (Calendar) dialogCal.clone();
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            int firstDayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+            int totalCells = firstDayOfWeek + daysInMonth;
+            int rows = (int) Math.ceil(totalCells / 7.0);
+            int cellIndex = 0;
+
+            for (int r = 0; r < rows; r++) {
+                LinearLayout row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                for (int c = 0; c < 7; c++) {
+                    TextView tv = new TextView(this);
+                    tv.setGravity(Gravity.CENTER);
+                    tv.setTextSize(15);
+                    tv.setPadding(4, 12, 4, 12);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
+                            LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+                    tv.setLayoutParams(params);
+
+                    if (cellIndex < firstDayOfWeek || cellIndex >= firstDayOfWeek + daysInMonth) {
+                        tv.setText("");
+                        tv.setClickable(false);
+                    } else {
+                        final int day = cellIndex - firstDayOfWeek + 1;
+                        tv.setText(String.valueOf(day));
+                        tv.setTextColor(0xFF333333);
+                        tv.setOnClickListener(v -> {
+                            Calendar chosen = (Calendar) dialogCal.clone();
+                            chosen.set(Calendar.DAY_OF_MONTH, day);
+                            selectedCal = chosen;
+                            selectedDateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedCal.getTime());
+                            tvSelectedDate.setText(selectedDateStr);
+                            if (currentDialog != null) currentDialog.dismiss();
+                        });
+                    }
+                    row.addView(tv);
+                    cellIndex++;
+                }
+                llCalendarContent.addView(row);
+            }
+        } else if (currentMode.equals("month")) {
+            // 月模式：显示滚轮
+            llCalendarContent.setVisibility(View.GONE);
+            llWeekHeader.setVisibility(View.GONE);
+            npWheel.setVisibility(View.VISIBLE);
+
+            tvDialogMonthYear.setText(new SimpleDateFormat("yyyy年", Locale.getDefault()).format(dialogCal.getTime()));
+            npWheel.setMinValue(1);
+            npWheel.setMaxValue(12);
+            npWheel.setValue(dialogCal.get(Calendar.MONTH) + 1);
+            npWheel.setDisplayedValues(new String[]{
+                    "1月", "2月", "3月", "4月", "5月", "6月",
+                    "7月", "8月", "9月", "10月", "11月", "12月"
+            });
+        } else if (currentMode.equals("year")) {
+            // 年模式：显示滚轮
+            llCalendarContent.setVisibility(View.GONE);
+            llWeekHeader.setVisibility(View.GONE);
+            npWheel.setVisibility(View.VISIBLE);
+
+            tvDialogMonthYear.setText("选择年份");
+            int thisYear = dialogCal.get(Calendar.YEAR);
+            int startYear = thisYear - 5;
+            int endYear = thisYear + 5;
+            String[] yearStrings = new String[endYear - startYear + 1];
+            for (int i = 0; i < yearStrings.length; i++) {
+                yearStrings[i] = (startYear + i) + "年";
+            }
+            npWheel.setMinValue(startYear);
+            npWheel.setMaxValue(endYear);
+            npWheel.setValue(thisYear);
+            npWheel.setDisplayedValues(yearStrings);
+        }
+    }
+
     private void addDayCell(String text, boolean isDay) {
-        TextView tv = new TextView(this); tv.setText(text); tv.setTextSize(15); tv.setGravity(android.view.Gravity.CENTER); tv.setPadding(8, 12, 8, 12);
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams(); params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, 1f); params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, 1f); tv.setLayoutParams(params); glCalendar.addView(tv);
+        TextView tv = new TextView(this);
+        tv.setText(text);
+        tv.setTextSize(15);
+        tv.setGravity(Gravity.CENTER);
+        tv.setPadding(8, 12, 8, 12);
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = 0;
+        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, 1f);
+        params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, 1f);
+        tv.setLayoutParams(params);
+        glCalendar.addView(tv);
     }
 
     private void clearSummary() { tvTotalSales.setText("--"); tvTotalProfit.setText("--"); tvSaleCount.setText("--"); }

@@ -42,79 +42,37 @@
             android:textSize="18sp"
             android:backgroundTint="#EEEEEE"
             android:padding="0dp" />
-
     </LinearLayout>
 
-    <!-- 星期标题 -->
+    <!-- 星期标题（仅日模式显示） -->
     <LinearLayout
+        android:id="@+id/ll_week_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="4dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="日"
-            android:textSize="13sp"
-            android:textColor="#999999"
-            android:gravity="center" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="一"
-            android:textSize="13sp"
-            android:textColor="#999999"
-            android:gravity="center" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="二"
-            android:textSize="13sp"
-            android:textColor="#999999"
-            android:gravity="center" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="三"
-            android:textSize="13sp"
-            android:textColor="#999999"
-            android:gravity="center" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="四"
-            android:textSize="13sp"
-            android:textColor="#999999"
-            android:gravity="center" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="五"
-            android:textSize="13sp"
-            android:textColor="#999999"
-            android:gravity="center" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="六"
-            android:textSize="13sp"
-            android:textColor="#999999"
-            android:gravity="center" />
+        android:layout_marginBottom="4dp"
+        android:visibility="gone">
+        <TextView style="@style/CalDayHeader" android:text="日"/>
+        <TextView style="@style/CalDayHeader" android:text="一"/>
+        <TextView style="@style/CalDayHeader" android:text="二"/>
+        <TextView style="@style/CalDayHeader" android:text="三"/>
+        <TextView style="@style/CalDayHeader" android:text="四"/>
+        <TextView style="@style/CalDayHeader" android:text="五"/>
+        <TextView style="@style/CalDayHeader" android:text="六"/>
     </LinearLayout>
 
-    <!-- 日期网格 -->
-    <GridLayout
-        android:id="@+id/gl_calendar"
+    <!-- 日模式的日历网格容器 -->
+    <LinearLayout
+        android:id="@+id/ll_calendar_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="7"
-        android:rowCount="6" />
+        android:orientation="vertical"
+        android:visibility="visible" />
+
+    <!-- 月/年模式的滚轮选择器 -->
+    <NumberPicker
+        android:id="@+id/np_wheel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>
