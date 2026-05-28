@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_gradient">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/primary"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📊 经营分析"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- ==================== 模块1：今日快报（四卡片） ==================== -->
+            <TextView
+                style="@style/AnalysisSectionTitle"
+                android:text="💡 今日快报"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_card_white"
+                    android:padding="12dp"
+                    android:layout_marginEnd="6dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="销售额" android:textSize="12sp" android:textColor="@color/text_hint"/>
+                    <TextView android:id="@+id/tv_report_sales" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="¥0" android:textSize="20sp" android:textColor="@color/primary_text" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_card_white"
+                    android:padding="12dp"
+                    android:layout_marginEnd="6dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="毛利" android:textSize="12sp" android:textColor="@color/text_hint"/>
+                    <TextView android:id="@+id/tv_report_profit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="¥0" android:textSize="20sp" android:textColor="@color/primary_text" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_card_white"
+                    android:padding="12dp"
+                    android:layout_marginEnd="6dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="订单数" android:textSize="12sp" android:textColor="@color/text_hint"/>
+                    <TextView android:id="@+id/tv_report_orders" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="20sp" android:textColor="@color/primary_text" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_card_white"
+                    android:padding="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="客单价" android:textSize="12sp" android:textColor="@color/text_hint"/>
+                    <TextView android:id="@+id/tv_report_avg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="¥0" android:textSize="20sp" android:textColor="@color/primary_text" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 查看完整数据按钮（靠右，半透明圆角） -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginBottom="12dp">
+                <Button
+                    android:id="@+id/btn_daily_chart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="查看完整数据 ›"
+                    android:textSize="14sp"
+                    android:textColor="@color/primary"
+                    android:background="@drawable/btn_rounded_translucent"/>
+            </LinearLayout>
+
+            <!-- ==================== 模块2：近7天销售趋势 ==================== -->
+            <TextView
+                style="@style/AnalysisSectionTitle"
+                android:text="📈 近7天销售趋势"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_trend_insight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+                    <Button
+                        android:id="@+id/btn_trend_chart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="查看折线图 ›"
+                        android:textSize="14sp"
+                        android:textColor="@color/primary"
+                        android:background="@drawable/btn_rounded_translucent"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ==================== 模块3：热销Top3 ==================== -->
+            <TextView
+                style="@style/AnalysisSectionTitle"
+                android:text="🔥 热销 Top 3"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_hot_insight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+                    <Button
+                        android:id="@+id/btn_hot_chart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="查看柱状图 ›"
+                        android:textSize="14sp"
+                        android:textColor="@color/primary"
+                        android:background="@drawable/btn_rounded_translucent"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ==================== 模块4：滞销提醒 ==================== -->
+            <TextView
+                style="@style/AnalysisSectionTitle"
+                android:text="❄️ 滞销提醒"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_slow_insight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+                    <Button
+                        android:id="@+id/btn_slow_chart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="查看滞销列表 ›"
+                        android:textSize="14sp"
+                        android:textColor="@color/primary"
+                        android:background="@drawable/btn_rounded_translucent"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ==================== 模块5：补货建议 ==================== -->
+            <TextView
+                style="@style/AnalysisSectionTitle"
+                android:text="⚠️ 补货建议"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_restock_insight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+                    <Button
+                        android:id="@+id/btn_restock_chart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="查看补货列表 ›"
+                        android:textSize="14sp"
+                        android:textColor="@color/primary"
+                        android:background="@drawable/btn_rounded_translucent"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ==================== 模块6：订单高峰 ==================== -->
+            <TextView
+                style="@style/AnalysisSectionTitle"
+                android:text="⏰ 订单高峰"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_peak_insight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+                    <Button
+                        android:id="@+id/btn_peak_chart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="查看时段图表 ›"
+                        android:textSize="14sp"
+                        android:textColor="@color/primary"
+                        android:background="@drawable/btn_rounded_translucent"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

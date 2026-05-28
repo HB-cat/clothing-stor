@@ -396,8 +396,7 @@ public class MyActivity extends BaseActivity {
         menuItems.add(new MenuItem("➕ 添加商品", () -> startActivity(new Intent(this, AddProductActivity.class))));
         menuItems.add(new MenuItem("🏷️ 属性管理", () -> startActivity(new Intent(this, AttributeGroupsActivity.class))));
         menuItems.add(new MenuItem("📦 库存查看", () -> startActivity(new Intent(this, InventoryActivity.class))));
-        menuItems.add(new MenuItem("🏆 热销排行", () -> startActivity(new Intent(this, RankActivity.class))));
-        menuItems.add(new MenuItem("📈 利润趋势", () -> startActivity(new Intent(this, ProfitActivity.class))));
+        menuItems.add(new MenuItem("📊 经营分析", () -> startActivity(new Intent(this, AnalysisActivity.class))));
         String savedOrder = prefs.getString("menu_order", "");
         if (!savedOrder.isEmpty()) {
             String[] ids = savedOrder.split(",");

@@ -63,14 +63,8 @@
             android:exported="false" />
 
         <!-- 热销排行 -->
-        <activity
-            android:name=".RankActivity"
-            android:exported="false" />
 
         <!-- 利润趋势 -->
-        <activity
-            android:name=".ProfitActivity"
-            android:exported="false" />
 
         <!-- 我的（设置、数据管理） -->
         <activity
@@ -82,6 +76,15 @@
             android:name=".GuideActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".AnalysisActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ChartLandscapeActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+
         <!-- 文件共享（拍照功能） -->
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -92,6 +95,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+
 
     </application>
 
